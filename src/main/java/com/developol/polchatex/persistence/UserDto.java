@@ -1,13 +1,15 @@
 package com.developol.polchatex.persistence;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name="users")
 public class UserDto {
     @Id
+    @Column(name="id")
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long id;
+
     private String username;
 
     private String email;
