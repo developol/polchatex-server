@@ -2,7 +2,6 @@ package com.developol.polchatex.configuration;
 
 import com.developol.polchatex.persistence.UserDto;
 import com.developol.polchatex.persistence.UserDtoRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -13,8 +12,6 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
-
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 
