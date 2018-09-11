@@ -19,6 +19,10 @@ public class MessageDto {
     @JoinColumn(name = "sender_id")
     private UserDto sender;
 
+    @ManyToOne
+    @JoinColumn(name = "receiver")
+    private UserDto receiver;
+
     @Lob
     @Column(name="content", length=512)
     private String content;
@@ -61,5 +65,13 @@ public class MessageDto {
 
     public void setRead(boolean read) {
         isRead = read;
+    }
+
+    public UserDto getReceiver() {
+        return receiver;
+    }
+
+    public void setReceiver(UserDto receiver) {
+        this.receiver = receiver;
     }
 }
