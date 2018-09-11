@@ -5,15 +5,16 @@ import com.developol.polchatex.persistence.UserDtoRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import java.util.Iterator;
 import java.util.LinkedList;
+
 
 
 @Configuration
@@ -43,9 +44,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .disable();
     }
 
-    @Bean
     @Override
-    protected UserDetailsService userDetailsService() {
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(inMemoryUserDetailsManager());
+    }
+
+
+    @Bean
+    public InMemoryUserDetailsManager inMemoryUserDetailsManager() {
         Iterable<UserDto> databaseUserList = userDtoRepository.findAll();
         LinkedList<UserDetails> securityUserList = new LinkedList<UserDetails>();
         Iterator i = databaseUserList.iterator();
@@ -60,9 +66,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                             .build()
             );
         }
-        return (new InMemoryUserDetailsManager(securityUserList));
+        return new InMemoryUserDetailsManager(securityUserList);
     }
-
-
 }
 
