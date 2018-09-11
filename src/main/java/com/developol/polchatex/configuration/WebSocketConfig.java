@@ -9,17 +9,18 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
 @Configuration
 @EnableWebSocketMessageBroker
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
+
     @Override
     public void configureMessageBroker(MessageBrokerRegistry config) {
-        config.enableSimpleBroker("/secured/user/queue/specific-user");
-        config.setApplicationDestinationPrefixes("/chat-socket");
-        config.setUserDestinationPrefix("/secured/user");
+        config.enableSimpleBroker("/topic", "/user/queue/specific-user");
+        config.setApplicationDestinationPrefixes("/app");
+        config.setUserDestinationPrefix("/user");
     }
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint("/secured/room")
-                .setAllowedOrigins("http://localhost:4200")
-                .withSockJS();
+        registry.addEndpoint("/socket")
+                .setAllowedOrigins("*").withSockJS();
     }
+
 }
