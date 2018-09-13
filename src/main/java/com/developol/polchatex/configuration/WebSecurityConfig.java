@@ -9,6 +9,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
@@ -32,16 +33,19 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.
                 httpBasic().and()
                 .authorizeRequests()
-                .antMatchers("/").permitAll()
+                .antMatchers("/login").permitAll()
                 .antMatchers(HttpMethod.OPTIONS, "/rest/**").permitAll()
                 .antMatchers(HttpMethod.GET, "/rest/**").hasRole("USER")
                 .antMatchers(HttpMethod.POST, "/rest/**").permitAll()
                 .antMatchers(HttpMethod.PUT, "/rest/**").hasRole("USER")
                 .antMatchers(HttpMethod.DELETE, "/rest/**").hasRole("USER")
-                .anyRequest().authenticated()
+                .antMatchers("/socket/**").hasRole("USER")
                 .and()
                 .csrf()
-                .disable();
+                .disable()
+                .cors()
+                .and()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED);
     }
 
     @Override
