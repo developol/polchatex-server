@@ -1,15 +1,20 @@
 package com.developol.polchatex.rest;
 import com.developol.polchatex.persistence.UserDto;
 import com.developol.polchatex.persistence.UserDtoRepository;
+import com.sun.deploy.net.HttpResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.RequestContextHolder;
+
+import java.security.Principal;
 import java.util.Map;
 
-@RestController
+@Controller
 @RequestMapping(path="/rest")
 public class MainController {
 
@@ -28,9 +33,12 @@ public class MainController {
     public boolean userExists(@PathVariable("username") String username ) {
         return inMemoryUserDetailsManager.userExists(username);
     }
-    @GetMapping(path="/hello")
-    public @ResponseBody String greeting() {
-        return "Hello World!";
+    @CrossOrigin(origins = "http://localhost:4200")
+    @GetMapping(path="/tknauth")
+    public @ResponseBody ResponseEntity<String> greeting() {
+        ResponseEntity<String> dupa =
+                new ResponseEntity<String>(RequestContextHolder.currentRequestAttributes().getSessionId(), HttpStatus.OK);
+        return dupa;
     }
 
     @PostMapping(path="/add")

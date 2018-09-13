@@ -29,7 +29,7 @@ public class SimpleChatController {
 
         message.setContent("Message sent at moment: " + LocalDateTime.now().toString() + " by " + user.getName());
         simpMessagingTemplate.convertAndSendToUser(
-                "mariusz", "/user/queue/specific-user", message);
+                "kupa", "/user/queue/specific-user", message);
         // "mariusz" is an username - here you can put your receiver's username
     }
 
