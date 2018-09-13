@@ -39,7 +39,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.POST, "/rest/**").permitAll()
                 .antMatchers(HttpMethod.PUT, "/rest/**").hasRole("USER")
                 .antMatchers(HttpMethod.DELETE, "/rest/**").hasRole("USER")
-                //.antMatchers("/socket/**").hasRole("USER")
+                .antMatchers("/socket/**").hasRole("USER")
                 .and()
                 .csrf()
                 .disable()
