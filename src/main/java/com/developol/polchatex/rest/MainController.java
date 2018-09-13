@@ -36,9 +36,7 @@ public class MainController {
     @CrossOrigin(origins = "http://localhost:4200")
     @GetMapping(path="/tknauth")
     public @ResponseBody ResponseEntity<String> greeting() {
-        ResponseEntity<String> dupa =
-                new ResponseEntity<String>(RequestContextHolder.currentRequestAttributes().getSessionId(), HttpStatus.OK);
-        return dupa;
+        return new ResponseEntity<String>(RequestContextHolder.currentRequestAttributes().getSessionId(), HttpStatus.OK);
     }
 
     @PostMapping(path="/add")
