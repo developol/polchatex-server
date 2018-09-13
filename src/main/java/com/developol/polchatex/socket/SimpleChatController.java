@@ -27,9 +27,16 @@ public class SimpleChatController {
         System.out.println("user: " + user.getName());
         System.out.println("session-id: " + sessionId);
 
-        message.setContent("Message sent at moment: " + LocalDateTime.now().toString() + " by " + user.getName());
+        //message.setContent("Message sent at moment: " + LocalDateTime.now().toString() + " by " + user.getName());
+        message.setContent(message.getContent() /*+ LocalDateTime.now()*/);
+        String receiver;
+        if (user.getName().equals("mariusz")) {
+            receiver = "grzegorz";
+        } else {
+            receiver = "mariusz";
+        }
         simpMessagingTemplate.convertAndSendToUser(
-                "kupa", "/user/queue/specific-user", message);
+                receiver, "/user/queue/specific-user", message);
         // "mariusz" is an username - here you can put your receiver's username
     }
 
