@@ -23,6 +23,10 @@ public class MessageDto {
     @Column(name="content", length=512)
     private String content;
 
+    @ManyToOne
+    @JoinColumn(name = "chat_id")
+    private ChatDto chat;
+
     @Column(name="isread")
     private boolean isRead;
 
@@ -61,5 +65,13 @@ public class MessageDto {
 
     public void setRead(boolean read) {
         isRead = read;
+    }
+
+    public ChatDto getChat() {
+        return chat;
+    }
+
+    public void setChat(ChatDto chat) {
+        this.chat = chat;
     }
 }

@@ -16,29 +16,17 @@ import java.util.Map;
 
 @Controller
 @RequestMapping(path="/rest")
-public class MainController {
+public class UserRegistrationController {
 
     private UserDtoRepository userDtoRepository;
     private BCryptPasswordEncoder bCryptPasswordEncoder;
     private final InMemoryUserDetailsManager inMemoryUserDetailsManager;
 
-    public MainController(UserDtoRepository userDtoRepository,
-                          InMemoryUserDetailsManager inMemoryUserDetailsManager) {
+    public UserRegistrationController(UserDtoRepository userDtoRepository,
+                                      InMemoryUserDetailsManager inMemoryUserDetailsManager) {
         this.bCryptPasswordEncoder = new BCryptPasswordEncoder();
         this.userDtoRepository = userDtoRepository;
         this.inMemoryUserDetailsManager = inMemoryUserDetailsManager;
-    }
-
-    @RequestMapping("exists/{username}")
-    public boolean userExists(@PathVariable("username") String username ) {
-        return inMemoryUserDetailsManager.userExists(username);
-    }
-    @CrossOrigin(origins = "http://localhost:4200")
-    @GetMapping(path="/tknauth")
-    public @ResponseBody ResponseEntity<String> greeting() {
-        ResponseEntity<String> dupa =
-                new ResponseEntity<String>(RequestContextHolder.currentRequestAttributes().getSessionId(), HttpStatus.OK);
-        return dupa;
     }
 
     @PostMapping(path="/add")
