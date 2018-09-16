@@ -3,9 +3,7 @@ package com.developol.polchatex.rest;
 import com.developol.polchatex.Model.ChatDTO;
 import com.developol.polchatex.Model.MessageDTO;
 import com.developol.polchatex.persistence.Chat;
-import com.developol.polchatex.persistence.ChatUsers;
 import com.developol.polchatex.persistence.Message;
-import com.developol.polchatex.services.MessageService;
 import com.developol.polchatex.services.PersistenceService;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
@@ -24,29 +22,27 @@ public class RestController {
 
     private PersistenceService persistenceService;
     private ModelMapper modelMapper;
-    private MessageService messageService;
 
     public RestController(PersistenceService persistenceService,
-                          ModelMapper modelMapper, MessageService messageService) {
+                          ModelMapper modelMapper) {
         this.persistenceService = persistenceService;
         this.modelMapper = modelMapper;
-        this.messageService = messageService;
     }
 
     @CrossOrigin(origins = "http://localhost:4200")
     @GetMapping(path = "/gethistory")
     public ResponseEntity<List<MessageDTO>> getChatHistory(@RequestParam long chatID) {
-        //TODO: add validation !!!
+        if (!this.persistenceService.isUserInChat(chatID,SecurityContextHolder.getContext().getAuthentication().getName())){
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
         Iterable<Message> queryResult = this.persistenceService.getChatHistory(chatID);
-        List<MessageDTO> requestResult = new ArrayList<MessageDTO>();
+        List<MessageDTO> requestResult = new ArrayList<>();
 
         if ( queryResult == null) {
             System.out.println("no such chat!");
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
-        queryResult.forEach((message -> {
-            requestResult.add(this.modelMapper.map(message, MessageDTO.class));
-        }));
+        queryResult.forEach((message -> requestResult.add(this.modelMapper.map(message, MessageDTO.class))));
 
         return new ResponseEntity<>(requestResult, HttpStatus.OK);
     }
@@ -59,7 +55,7 @@ public class RestController {
 
         String user = SecurityContextHolder.getContext().getAuthentication().getName();
         Iterable<Chat> queryResult = this.persistenceService.getChatList(user);
-        LinkedList<ChatDTO> result = new LinkedList<ChatDTO>();
+        LinkedList<ChatDTO> result = new LinkedList<>();
 
         if (queryResult == null) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);

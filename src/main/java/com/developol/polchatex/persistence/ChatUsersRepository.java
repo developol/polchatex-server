@@ -15,9 +15,11 @@ public interface ChatUsersRepository extends CrudRepository<ChatUsers, Integer> 
     List<Chat> findChatList(@Param("username") String username);
 
     @Query(value="SELECT COUNT(c) FROM ChatUsers c " +
-            "JOIN c.user u " +
-            "WHERE u.username = :usr2 " +
+            "WHERE c.user.username = :usr2 " +
             "AND c.chat " +
-            "IN(SELECT h FROM ChatUsers c JOIN c.chat h JOIN c.user r WHERE h.size = 2 AND r.username = :usr1)")
+            "IN(SELECT x.chat FROM ChatUsers x WHERE x.chat.size = 2 AND x.user.username = :usr1)")
     int countofPrivateConversation(@Param("usr1") String username1,@Param("usr2") String username2);
+
+    @Query(value="SELECT COUNT(c) FROM ChatUsers c WHERE c.chat.id = :id AND c.user.username = :username")
+    int isUserInChat(@Param("id") long chatID, @Param("username") String username);
 }

@@ -1,6 +1,6 @@
 package com.developol.polchatex.services;
 
-import com.developol.polchatex.Model.ChatDTO;
+
 import com.developol.polchatex.Model.WebSocketPayload;
 import com.developol.polchatex.persistence.*;
 import org.springframework.stereotype.Service;
@@ -39,7 +39,7 @@ public class PersistenceService {
         return message;
     }
 
-    public Chat persistChat(String username, String[] usernames) {
+    public Chat persistChat(String initiatorUsername, String[] usernames) {
         Chat chat = new Chat();
         chat.setSize(usernames.length +1);
         this.chatRepository.save(chat);
@@ -48,12 +48,12 @@ public class PersistenceService {
 
         ChatUsers chatUsers = new ChatUsers();
         chatUsers.setChat(chat);
-        chatUsers.setUser(this.getUser(username));
+        chatUsers.setUser(this.getUser(initiatorUsername));
         this.chatUsersRepository.save(chatUsers);
         User user;
-        for ( int i =0; i<usernames.length; i++) {
+        for (String usrname : usernames) {
             chatUsers = new ChatUsers();
-            user = this.getUser(usernames[i]);
+            user = this.getUser(usrname);
             chatUsers.setChat(chat);
             chatUsers.setUser(user);
             this.chatUsersRepository.save(chatUsers);
@@ -61,7 +61,7 @@ public class PersistenceService {
         return chat;
     }
 
-    public User getUser(String username) {
+    private User getUser(String username) {
         return this.userRepository.getByUsername(username);
     }
 
@@ -85,6 +85,10 @@ public class PersistenceService {
 
     public boolean privateChatExists(String username1, String username2) {
         return this.chatUsersRepository.countofPrivateConversation(username1, username2) != 0;
+    }
+
+    public boolean isUserInChat(long chatID, String username) {
+        return this.chatUsersRepository.isUserInChat(chatID, username) !=0;
     }
 
 }

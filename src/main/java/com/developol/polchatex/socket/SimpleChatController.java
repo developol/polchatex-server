@@ -2,10 +2,7 @@ package com.developol.polchatex.socket;
 
 import com.developol.polchatex.Model.WebSocketPayload;
 import com.developol.polchatex.persistence.Chat;
-import com.developol.polchatex.persistence.ChatUsers;
 import com.developol.polchatex.persistence.Message;
-import com.developol.polchatex.persistence.User;
-import com.developol.polchatex.services.MessageService;
 import com.developol.polchatex.services.PersistenceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.Header;
@@ -20,14 +17,12 @@ import java.util.List;
 @Controller
 public class SimpleChatController {
     private SimpMessagingTemplate simpMessagingTemplate;
-    private MessageService messageService;
     private PersistenceService persistenceService;
 
     @Autowired
     public SimpleChatController(SimpMessagingTemplate simpMessagingTemplate,
-                                MessageService messageService, PersistenceService persistenceService) {
+                                PersistenceService persistenceService) {
         this.simpMessagingTemplate = simpMessagingTemplate;
-        this.messageService = messageService;
         this.persistenceService = persistenceService;
     }
 
@@ -37,7 +32,7 @@ public class SimpleChatController {
         System.out.println(payload.getChatID());
         System.out.println(payload.getMessageContent());
 
-        if (!this.messageService.checkPayload(payload)) {
+        if (payload.getMessageContent() == null || payload.getChatID() == 0) {
             //notify the sender, that something went wrong
             //not supported yet
             System.out.println("check FALSE");
