@@ -14,15 +14,4 @@ public class MessageService {
         }
         return false;
     }
-
-    public String getReceiverUsername(Chat chat, String sender) {
-
-        if (chat.getUser1().getUsername().equals(sender)) {
-            return chat.getUser2().getUsername();
-        } else if ( chat.getUser2().getUsername().equals(sender)) {
-            return chat.getUser1().getUsername();
-        }
-        //TODO: throw exceptions!
-        return null;
-    }
 }

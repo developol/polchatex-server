@@ -4,7 +4,7 @@ import com.developol.polchatex.persistence.Message;
 
 public class ChatDTO {
     private long id;
-    private String name;
+    private String chatName;
     private String usernames[];
     private MessageDTO lastMessage;
 
@@ -26,12 +26,12 @@ public class ChatDTO {
         this.lastMessage = lastMessage;
     }
 
-    public String getName() {
-        return name;
+    public String getChatName() {
+        return chatName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setChatName(String name) {
+        this.chatName = name;
     }
 
     public String[] getUsernames() {
