@@ -4,7 +4,7 @@ package com.developol.polchatex.persistence;
 import javax.persistence.*;
 
 @Entity
-public class ChatDto {
+public class Chat {
     @Id
     @Column(name="id")
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -12,11 +12,11 @@ public class ChatDto {
 
     @ManyToOne
     @JoinColumn(name = "user1_id")
-    private UserDto user1;
+    private User user1;
 
     @ManyToOne
     @JoinColumn(name = "user2_id")
-    private UserDto user2;
+    private User user2;
 
 
     public long getId() {
@@ -27,19 +27,20 @@ public class ChatDto {
         this.id = id;
     }
 
-    public UserDto getUser1() {
+    public User getUser1() {
         return user1;
     }
 
-    public void setUser1(UserDto user1) {
+    public void setUser1(User user1) {
         this.user1 = user1;
     }
 
-    public UserDto getUser2() {
+    public User getUser2() {
         return user2;
     }
 
-    public void setUser2(UserDto user2) {
+    public void setUser2(User user2) {
         this.user2 = user2;
     }
+
 }

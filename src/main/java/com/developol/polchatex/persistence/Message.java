@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name="messages")
-public class MessageDto {
+public class Message {
 
     @Id
     @Column(name="id")
@@ -17,7 +17,7 @@ public class MessageDto {
 
     @ManyToOne
     @JoinColumn(name = "sender_id")
-    private UserDto sender;
+    private User sender;
 
     @Lob
     @Column(name="content", length=512)
@@ -25,7 +25,7 @@ public class MessageDto {
 
     @ManyToOne
     @JoinColumn(name = "chat_id")
-    private ChatDto chat;
+    private Chat chat;
 
     @Column(name="isread")
     private boolean isRead;
@@ -43,11 +43,11 @@ public class MessageDto {
         this.id = id;
     }
 
-    public UserDto getSender() {
+    public User getSender() {
         return sender;
     }
 
-    public void setSender(UserDto sender) {
+    public void setSender(User sender) {
         this.sender = sender;
     }
 
@@ -67,11 +67,19 @@ public class MessageDto {
         isRead = read;
     }
 
-    public ChatDto getChat() {
+    public Chat getChat() {
         return chat;
     }
 
-    public void setChat(ChatDto chat) {
+    public void setChat(Chat chat) {
         this.chat = chat;
+    }
+
+    public LocalDateTime getCreateDateTime() {
+        return createDateTime;
+    }
+
+    public void setCreateDateTime(LocalDateTime createDateTime) {
+        this.createDateTime = createDateTime;
     }
 }
