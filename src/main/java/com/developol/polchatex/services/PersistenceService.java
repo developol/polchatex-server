@@ -12,15 +12,17 @@ public class PersistenceService {
     private MessageRepository messageRepository;
     private ChatRepository chatRepository;
     private UserRepository userRepository;
+    private ChatUsersRepository chatUsersRepository;
 
     public PersistenceService(MessageRepository messageRepository,
                               ChatRepository chatRepository,
-                              UserRepository userRepository) {
+                              UserRepository userRepository,
+                              ChatUsersRepository chatUsersRepository) {
         this.messageRepository = messageRepository;
         this.chatRepository = chatRepository;
         this.userRepository = userRepository;
+        this.chatUsersRepository = chatUsersRepository;
     }
-
 
     public Message persistMessage(WebSocketPayload payload, String senderUsername, Chat chat) {
         Message message = new Message();
@@ -57,6 +59,10 @@ public class PersistenceService {
 
     public Chat getChat(long chatID) {
         return this.chatRepository.getById(chatID);
+    }
+
+    public List<String> getChatUsers(Chat chat) {
+        return this.chatUsersRepository.findUsers(chat);
     }
 
     public Iterable<Message> getChatHistory(long chatID) {

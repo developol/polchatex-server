@@ -62,9 +62,11 @@ public class RestController {
         if (queryResult == null) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
+
+        //TODO: simplify and implement an array of users
         queryResult.forEach(chat -> {
             result.add(this.modelMapper.map(chat, ChatDTO.class));
-            result.getLast().setUsername(this.messageService.getReceiverUsername(chat, user));
+           // result.getLast().setUsername(this.messageService.getReceiverUsername(chat, user));
             Message message = this.persistenceService.getLastMessage(chat);
 
             if (message != null) {
@@ -83,7 +85,7 @@ public class RestController {
             return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
         ChatDTO chatDTO = new ChatDTO();
-        chatDTO.setUsername(username);
+       // chatDTO.setUsername(username);
         chatDTO.setId(chat.getId());
         return new ResponseEntity<>(chatDTO, HttpStatus.OK);
     }

@@ -9,7 +9,7 @@ public class Chat {
     @Column(name="id")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
-
+    //TODO: ADD CHAT NAME, SET TO CONTENTS OF USERLIST BY DEFAULT
     @ManyToOne
     @JoinColumn(name = "user1_id")
     private User user1;
