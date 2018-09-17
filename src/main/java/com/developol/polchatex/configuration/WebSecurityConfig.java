@@ -1,7 +1,8 @@
 package com.developol.polchatex.configuration;
 
-import com.developol.polchatex.persistence.UserDto;
-import com.developol.polchatex.persistence.UserDtoRepository;
+import com.developol.polchatex.persistence.User;
+import com.developol.polchatex.persistence.UserRepository;
+import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -9,7 +10,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.userdetails.User;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import java.util.Iterator;
@@ -21,10 +22,10 @@ import java.util.LinkedList;
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private UserDtoRepository userDtoRepository;
+    private UserRepository userRepository;
 
-    public WebSecurityConfig(UserDtoRepository userDtoRepository) {
-        this.userDtoRepository = userDtoRepository;
+    public WebSecurityConfig(UserRepository userRepository) {
+        this.userRepository = userRepository;
     }
 
     @Override
@@ -32,16 +33,19 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.
                 httpBasic().and()
                 .authorizeRequests()
-                .antMatchers("/").permitAll()
+                .antMatchers("/login").permitAll()
                 .antMatchers(HttpMethod.OPTIONS, "/rest/**").permitAll()
                 .antMatchers(HttpMethod.GET, "/rest/**").hasRole("USER")
                 .antMatchers(HttpMethod.POST, "/rest/**").permitAll()
                 .antMatchers(HttpMethod.PUT, "/rest/**").hasRole("USER")
                 .antMatchers(HttpMethod.DELETE, "/rest/**").hasRole("USER")
-                .anyRequest().authenticated()
+                //.antMatchers("/socket/**").hasRole("USER")
                 .and()
                 .csrf()
-                .disable();
+                .disable()
+                .cors()
+                .and()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED);
     }
 
     @Override
@@ -52,14 +56,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     public InMemoryUserDetailsManager inMemoryUserDetailsManager() {
-        Iterable<UserDto> databaseUserList = userDtoRepository.findAll();
+        Iterable<User> databaseUserList = userRepository.findAll();
         LinkedList<UserDetails> securityUserList = new LinkedList<UserDetails>();
         Iterator i = databaseUserList.iterator();
-        UserDto u;
+        User u;
         while (i.hasNext()) {
-            u = (UserDto) i.next();
+            u = (User) i.next();
             securityUserList.add(
-                    User.builder()
+                    org.springframework.security.core.userdetails.User.builder()
                             .username(u.getUsername())
                             .password(u.getPassword())
                             .roles("USER")
@@ -68,5 +72,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         }
         return new InMemoryUserDetailsManager(securityUserList);
     }
+
 }
 
