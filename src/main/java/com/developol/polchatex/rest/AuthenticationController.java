@@ -6,6 +6,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.RequestContextHolder;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
+
 @Controller
 @RequestMapping(path="/security")
 public class AuthenticationController {
@@ -13,9 +16,13 @@ public class AuthenticationController {
     @CrossOrigin
     @GetMapping(path="/tknauth")
     public @ResponseBody
-    ResponseEntity<String> greeting() {
-                return new
-                        ResponseEntity<String>(RequestContextHolder.currentRequestAttributes().getSessionId(),
+    ResponseEntity<String> greeting(HttpServletResponse response) {
+        Cookie c = new Cookie("JSESSIONID", RequestContextHolder.currentRequestAttributes().getSessionId());
+        c.setDomain("agile-hollows-19556.herokuapp.com");
+        c.setSecure(true);
+        c.setHttpOnly(true);
+        response.addCookie(c);
+        return new ResponseEntity<String>(RequestContextHolder.currentRequestAttributes().getSessionId(),
                         HttpStatus.OK);
     }
 }
