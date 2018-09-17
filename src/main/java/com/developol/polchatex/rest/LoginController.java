@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
@@ -14,6 +15,7 @@ import java.util.Base64;
 public class LoginController {
         @CrossOrigin
         @RequestMapping("/login")
+        @ResponseBody
         public boolean login(@RequestBody User user) {
             return
                     user.getUsername().equals("grzegorz") && user.getPassword().equals("dupa");
