@@ -10,14 +10,11 @@ public class Chat {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    @ManyToOne
-    @JoinColumn(name = "user1_id")
-    private User user1;
+    @Column(name="chat_name")
+    private String chatName;
 
-    @ManyToOne
-    @JoinColumn(name = "user2_id")
-    private User user2;
-
+    @Column(name="chat_size")
+    private int size;
 
     public long getId() {
         return id;
@@ -27,20 +24,20 @@ public class Chat {
         this.id = id;
     }
 
-    public User getUser1() {
-        return user1;
+    public String getChatName() {
+        return chatName;
     }
 
-    public void setUser1(User user1) {
-        this.user1 = user1;
+    public void setChatName(String chatName) {
+        this.chatName = chatName;
     }
 
-    public User getUser2() {
-        return user2;
+
+    public int getSize() {
+        return size;
     }
 
-    public void setUser2(User user2) {
-        this.user2 = user2;
+    public void setSize(int size) {
+        this.size = size;
     }
-
 }
