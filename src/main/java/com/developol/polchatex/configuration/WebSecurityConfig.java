@@ -35,6 +35,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/login").permitAll()
                 .antMatchers("/registration/**").permitAll()
+                .antMatchers("/security/tknauth").hasRole("USER")
                 .antMatchers(HttpMethod.OPTIONS, "/rest/**").permitAll()
                 .antMatchers(HttpMethod.GET, "/rest/**").hasRole("USER")
                 .antMatchers(HttpMethod.POST, "/rest/**").permitAll()
