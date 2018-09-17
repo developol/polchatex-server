@@ -16,7 +16,7 @@ public class LoginController {
         @RequestMapping("/login")
         public boolean login(@RequestBody User user) {
             return
-                    user.getUsername().equals("user") && user.getPassword().equals("password");
+                    user.getUsername().equals("grzegorz") && user.getPassword().equals("dupa");
         }
 
         @CrossOrigin
