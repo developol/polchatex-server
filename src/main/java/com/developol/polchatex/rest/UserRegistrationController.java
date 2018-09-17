@@ -25,7 +25,7 @@ public class UserRegistrationController {
         this.inMemoryUserDetailsManager = inMemoryUserDetailsManager;
     }
 
-    @CrossOrigin("*")
+    @CrossOrigin
     @PostMapping(path="/add")
     public ResponseEntity addUser(@RequestBody Map<String, Object> body) {
         User user = new User();

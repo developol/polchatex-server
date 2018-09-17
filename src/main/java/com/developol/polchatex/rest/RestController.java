@@ -29,7 +29,7 @@ public class RestController {
         this.modelMapper = modelMapper;
     }
 
-    @CrossOrigin(origins = "http://localhost:4200")
+    @CrossOrigin
     @GetMapping(path = "/gethistory")
     public ResponseEntity<List<MessageDTO>> getChatHistory(@RequestParam long chatID) {
         if (!this.persistenceService.isUserInChat(chatID,SecurityContextHolder.getContext().getAuthentication().getName())){
@@ -47,7 +47,7 @@ public class RestController {
         return new ResponseEntity<>(requestResult, HttpStatus.OK);
     }
 
-    @CrossOrigin(origins = "http://localhost:4200")
+    @CrossOrigin
     @GetMapping(path= "/getchatlist")
     public ResponseEntity<List<ChatDTO>> getchatlist() {
         //The username is determined based on the current session,

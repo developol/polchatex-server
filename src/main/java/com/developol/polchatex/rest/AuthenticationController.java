@@ -10,7 +10,7 @@ import org.springframework.web.context.request.RequestContextHolder;
 @RequestMapping(path="/security")
 public class AuthenticationController {
 
-    @CrossOrigin(origins = "http://localhost:4200")
+    @CrossOrigin
     @GetMapping(path="/tknauth")
     public @ResponseBody
     ResponseEntity<String> greeting() {
