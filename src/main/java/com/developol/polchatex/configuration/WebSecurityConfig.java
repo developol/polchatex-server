@@ -34,6 +34,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 httpBasic().and()
                 .authorizeRequests()
                 .antMatchers("/login").permitAll()
+                .antMatchers("/registration/**").permitAll()
                 .antMatchers(HttpMethod.OPTIONS, "/rest/**").permitAll()
                 .antMatchers(HttpMethod.GET, "/rest/**").hasRole("USER")
                 .antMatchers(HttpMethod.POST, "/rest/**").permitAll()
@@ -57,7 +58,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public InMemoryUserDetailsManager inMemoryUserDetailsManager() {
         Iterable<User> databaseUserList = userRepository.findAll();
-        LinkedList<UserDetails> securityUserList = new LinkedList<UserDetails>();
+        LinkedList<UserDetails> securityUserList = new LinkedList<>();
         Iterator i = databaseUserList.iterator();
         User u;
         while (i.hasNext()) {
