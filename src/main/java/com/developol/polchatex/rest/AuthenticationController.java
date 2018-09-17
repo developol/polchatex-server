@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 @RequestMapping(path="/security")
 public class AuthenticationController {
 
-    @CrossOrigin(value={"https://polchatex-front.herokuapp.com/", "https://polchatex-front2.herokuapp.com/"})
+    @CrossOrigin(value={"https://polchatex-front.herokuapp.com", "https://polchatex-front2.herokuapp.com"})
     @GetMapping(path="/tknauth")
     public @ResponseBody
     ResponseEntity<String> greeting(HttpServletResponse response) {
