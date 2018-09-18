@@ -1,7 +1,7 @@
 package com.developol.polchatex.rest;
 
-import com.developol.polchatex.Model.ChatDTO;
-import com.developol.polchatex.Model.MessageDTO;
+import com.developol.polchatex.model.ChatDTO;
+import com.developol.polchatex.model.MessageDTO;
 import com.developol.polchatex.persistence.Chat;
 import com.developol.polchatex.persistence.Message;
 import com.developol.polchatex.services.PersistenceService;
@@ -29,7 +29,7 @@ public class RestController {
         this.modelMapper = modelMapper;
     }
 
-    @CrossOrigin(origins = "http://localhost:4200")
+    @CrossOrigin
     @GetMapping(path = "/gethistory")
     public ResponseEntity<List<MessageDTO>> getChatHistory(@RequestParam long chatID) {
         if (!this.persistenceService.isUserInChat(chatID,SecurityContextHolder.getContext().getAuthentication().getName())){
@@ -47,7 +47,7 @@ public class RestController {
         return new ResponseEntity<>(requestResult, HttpStatus.OK);
     }
 
-    @CrossOrigin(origins = "http://localhost:4200")
+    @CrossOrigin
     @GetMapping(path= "/getchatlist")
     public ResponseEntity<List<ChatDTO>> getchatlist() {
         //The username is determined based on the current session,
