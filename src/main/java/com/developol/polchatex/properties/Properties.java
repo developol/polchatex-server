@@ -10,7 +10,7 @@ public class Properties {
 
     private final String serverDomain = "polchatex-server.herokuapp.com";
     //private final String clientUrl = "http://localhost:4200";
-    private final String clientUrl = "https://polchatex.herokuapp.com/";
+    private final String clientUrl = "https://polchatex.herokuapp.com";
 
     public String getServerUrl() {
         return serverUrl;
