@@ -2,6 +2,8 @@ package com.developol.polchatex.configuration;
 
 import com.developol.polchatex.persistence.User;
 import com.developol.polchatex.persistence.UserRepository;
+import com.developol.polchatex.properties.Properties;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -25,11 +27,12 @@ import java.util.LinkedList;
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-
+    private final String clientUrl;
     private UserRepository userRepository;
 
-    public WebSecurityConfig(UserRepository userRepository) {
+    public WebSecurityConfig(UserRepository userRepository, @Autowired Properties properties) {
         this.userRepository = userRepository;
+        this.clientUrl = properties.getClientUrl();
     }
 
     @Override
@@ -56,7 +59,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("https://polchatex.herokuapp.com"));
+        configuration.setAllowedOrigins(Arrays.asList(clientUrl));
         configuration.setAllowedMethods(Arrays.asList("GET","POST"));
         configuration.setAllowedHeaders(Arrays.asList("authorization"));
         configuration.setAllowCredentials(true);

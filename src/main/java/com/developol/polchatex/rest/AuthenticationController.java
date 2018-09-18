@@ -1,5 +1,7 @@
 package com.developol.polchatex.rest;
 
+import com.developol.polchatex.properties.Properties;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -12,6 +14,11 @@ import javax.servlet.http.HttpServletResponse;
 @Controller
 @RequestMapping(path="/security")
 public class AuthenticationController {
+    private final String serverDomain;
+    public AuthenticationController(@Autowired Properties properties) {
+        serverDomain = properties.getServerDomain();
+    }
+
 
     //@CrossOrigin(value={"https://polchatex-front.herokuapp.com", "https://polchatex-front2.herokuapp.com",
      //       "http://localhost:4200"})
@@ -19,7 +26,7 @@ public class AuthenticationController {
     public @ResponseBody
     ResponseEntity<String> greeting(HttpServletResponse response) {
         Cookie c = new Cookie("JSESSIONID", RequestContextHolder.currentRequestAttributes().getSessionId());
-        c.setDomain("agile-hollows-19556.herokuapp.com");
+        c.setDomain(serverDomain);
         c.setSecure(true);
         c.setHttpOnly(true);
         response.addCookie(c);
