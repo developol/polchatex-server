@@ -19,8 +19,8 @@ public class Message {
     @JoinColumn(name = "sender_id")
     private User sender;
 
-    @Lob
-    @Column(name="content", length=512)
+
+    @Column(columnDefinition = "text")
     private String content;
 
     @ManyToOne
