@@ -23,7 +23,7 @@ public class AuthenticationController {
     public @ResponseBody
     ResponseEntity<String> authorize(HttpServletResponse response) {
         Cookie c = new Cookie("JSESSIONID", RequestContextHolder.currentRequestAttributes().getSessionId());
-        c.setDomain("127.0.0.1");
+        c.setDomain("polchatex-server.herokuapp.com");
         c.setSecure(true);
         c.setHttpOnly(true);
         response.addCookie(c);
