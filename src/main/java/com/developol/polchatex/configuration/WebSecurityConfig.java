@@ -56,7 +56,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("https://polchatex-front.herokuapp.com"));
+        configuration.setAllowedOrigins(Arrays.asList("https://polchatex.herokuapp.com"));
         configuration.setAllowedMethods(Arrays.asList("GET","POST"));
         configuration.setAllowedHeaders(Arrays.asList("authorization"));
         configuration.setAllowCredentials(true);
