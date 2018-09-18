@@ -1,7 +1,7 @@
 package com.developol.polchatex.services;
 
 
-import com.developol.polchatex.Model.WebSocketPayload;
+import com.developol.polchatex.model.WebSocketPayload;
 import com.developol.polchatex.persistence.*;
 import org.springframework.stereotype.Service;
 
