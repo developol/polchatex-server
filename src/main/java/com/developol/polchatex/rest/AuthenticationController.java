@@ -13,7 +13,8 @@ import javax.servlet.http.HttpServletResponse;
 @RequestMapping(path="/security")
 public class AuthenticationController {
 
-    @CrossOrigin(value={"https://polchatex-front.herokuapp.com", "https://polchatex-front2.herokuapp.com"})
+    //@CrossOrigin(value={"https://polchatex-front.herokuapp.com", "https://polchatex-front2.herokuapp.com",
+     //       "http://localhost:4200"})
     @GetMapping(path="/tknauth")
     public @ResponseBody
     ResponseEntity<String> greeting(HttpServletResponse response) {
@@ -22,7 +23,7 @@ public class AuthenticationController {
         c.setSecure(true);
         c.setHttpOnly(true);
         response.addCookie(c);
-        return new ResponseEntity<String>(RequestContextHolder.currentRequestAttributes().getSessionId(),
-                        HttpStatus.OK);
+        return new ResponseEntity<>(RequestContextHolder.currentRequestAttributes().getSessionId(),
+                HttpStatus.OK);
     }
 }

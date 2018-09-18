@@ -1,6 +1,6 @@
 package com.developol.polchatex.socket;
 
-import com.developol.polchatex.Model.WebSocketPayload;
+import com.developol.polchatex.model.WebSocketPayload;
 import com.developol.polchatex.persistence.Chat;
 import com.developol.polchatex.persistence.Message;
 import com.developol.polchatex.services.PersistenceService;

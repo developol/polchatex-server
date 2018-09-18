@@ -1,7 +1,7 @@
 package com.developol.polchatex.rest;
 
-import com.developol.polchatex.Model.ChatDTO;
-import com.developol.polchatex.Model.MessageDTO;
+import com.developol.polchatex.model.ChatDTO;
+import com.developol.polchatex.model.MessageDTO;
 import com.developol.polchatex.persistence.Chat;
 import com.developol.polchatex.persistence.Message;
 import com.developol.polchatex.services.PersistenceService;
