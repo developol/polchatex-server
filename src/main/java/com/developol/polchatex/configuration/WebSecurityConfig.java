@@ -2,7 +2,8 @@ package com.developol.polchatex.configuration;
 
 import com.developol.polchatex.persistence.User;
 import com.developol.polchatex.persistence.UserRepository;
-import org.modelmapper.ModelMapper;
+import com.developol.polchatex.properties.Properties;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -13,6 +14,12 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
 
@@ -23,9 +30,11 @@ import java.util.LinkedList;
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private UserRepository userRepository;
+    private Properties properties;
 
-    public WebSecurityConfig(UserRepository userRepository) {
+    public WebSecurityConfig(UserRepository userRepository, @Autowired Properties properties) {
         this.userRepository = userRepository;
+        this.properties = properties;
     }
 
     @Override
@@ -48,6 +57,18 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED);
     }
 
+    @Bean
+    CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(Collections.singletonList(properties.getClientUrl()));
+        configuration.setAllowedMethods(Arrays.asList("GET","POST"));
+        configuration.setAllowedHeaders(Collections.singletonList("authorization"));
+        configuration.setAllowCredentials(true);
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
+    }
+
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(inMemoryUserDetailsManager());
@@ -57,7 +78,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public InMemoryUserDetailsManager inMemoryUserDetailsManager() {
         Iterable<User> databaseUserList = userRepository.findAll();
-        LinkedList<UserDetails> securityUserList = new LinkedList<UserDetails>();
+        LinkedList<UserDetails> securityUserList = new LinkedList<>();
         Iterator i = databaseUserList.iterator();
         User u;
         while (i.hasNext()) {

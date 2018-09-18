@@ -1,4 +1,4 @@
-package com.developol.polchatex.Model;
+package com.developol.polchatex.model;
 
 public class WebSocketPayload {
     private long chatID;

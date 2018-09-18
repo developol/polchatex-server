@@ -1,6 +1,4 @@
-package com.developol.polchatex.Model;
-
-import java.time.LocalDateTime;
+package com.developol.polchatex.model;
 
 public class MessageDTO {
     private long id;

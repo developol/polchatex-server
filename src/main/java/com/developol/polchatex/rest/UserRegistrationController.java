@@ -35,7 +35,7 @@ public class UserRegistrationController {
                 && user.getUsername() !=null && !user.getUsername().trim().equals("") ) {
 
             user.setPassword("{bcrypt}" + bCryptPasswordEncoder.encode(user.getPassword()));
-            user.setEmail("dupa");
+            user.setEmail("example@example.com");
 
             userRepository.save(user);
             inMemoryUserDetailsManager.createUser( org.springframework.security.core.userdetails.User.builder()

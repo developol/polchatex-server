@@ -1,6 +1,6 @@
 package com.developol.polchatex.socket;
 
-import com.developol.polchatex.Model.WebSocketPayload;
+import com.developol.polchatex.model.WebSocketPayload;
 import com.developol.polchatex.persistence.Chat;
 import com.developol.polchatex.persistence.Message;
 import com.developol.polchatex.services.MessageService;
@@ -34,7 +34,7 @@ public class SimpleChatController {
         System.out.println(payload.getChatID());
         System.out.println(payload.getMessageContent());
 
-        if (payload == null || !this.messageService.checkPayload(payload)) {
+        if (!this.messageService.checkPayload(payload)) {
             //notify the sender, that something went wrong
             //not supported yet
             System.out.println("check FALSE");

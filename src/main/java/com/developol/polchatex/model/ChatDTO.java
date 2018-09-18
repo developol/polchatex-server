@@ -1,6 +1,4 @@
-package com.developol.polchatex.Model;
-
-import com.developol.polchatex.persistence.Message;
+package com.developol.polchatex.model;
 
 public class ChatDTO {
     private long id;

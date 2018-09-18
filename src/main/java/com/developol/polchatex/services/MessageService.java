@@ -1,6 +1,6 @@
 package com.developol.polchatex.services;
 
-import com.developol.polchatex.Model.WebSocketPayload;
+import com.developol.polchatex.model.WebSocketPayload;
 import com.developol.polchatex.persistence.Chat;
 import org.springframework.stereotype.Service;
 
@@ -8,11 +8,8 @@ import org.springframework.stereotype.Service;
 public class MessageService {
 
     public boolean checkPayload(WebSocketPayload payload) {
-        if (payload.getMessageContent() != null && payload.getChatID() != 0) {
-            //0 is the default long value and the database IDs start from 1
-            return true;
-        }
-        return false;
+        //0 is the default long value and the database IDs start from 1
+        return payload.getMessageContent() != null && payload.getChatID() != 0;
     }
 
     public String getReceiverUsername(Chat chat, String sender) {
