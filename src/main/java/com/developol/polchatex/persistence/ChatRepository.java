@@ -2,5 +2,7 @@ package com.developol.polchatex.persistence;
 
 import org.springframework.data.repository.CrudRepository;
 
-public interface MessageDtoRepository extends CrudRepository<MessageDto, Integer> {
+
+public interface ChatRepository extends CrudRepository<Chat, Integer> {
+    Chat getById(long id);
 }
