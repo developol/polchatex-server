@@ -32,7 +32,7 @@ public class UserRegistrationController {
         if (password == null || username == null
                 || password.trim().equals("")
                 || username.trim().equals("") ) {
-            return new ResponseEntity(HttpStatus.NOT_ACCEPTABLE);
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
 
         if (this.persistenceService.getUser(username) != null) {

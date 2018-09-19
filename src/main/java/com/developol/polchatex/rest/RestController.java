@@ -42,7 +42,12 @@ public class RestController {
             System.out.println("no such chat!");
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
-        queryResult.forEach((message -> requestResult.add(this.modelMapper.map(message, MessageDTO.class))));
+        queryResult.forEach((message -> {
+            MessageDTO msg = this.modelMapper.map(message, MessageDTO.class);
+            msg.setSender(message.getSender().getUsername());
+            requestResult.add(msg);
+        }
+        ));
 
         return new ResponseEntity<>(requestResult, HttpStatus.OK);
     }

@@ -1,8 +1,11 @@
 package com.developol.polchatex.model;
 
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class MessageDTO {
+import java.io.Serializable;
+
+public class MessageDTO implements Serializable {
     private long id;
     private long ChatID;
     private String sender;
@@ -35,7 +38,7 @@ public class MessageDTO {
     public void setContent(String content) {
         this.content = content;
     }
-
+    @JsonProperty(value="isSuccess")
     public boolean isRead() {
         return isRead;
     }
