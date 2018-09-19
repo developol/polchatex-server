@@ -27,7 +27,7 @@ public class AuthenticationController {
     ResponseEntity<String> greeting(HttpServletResponse response) {
         Cookie c = new Cookie("JSESSIONID", RequestContextHolder.currentRequestAttributes().getSessionId());
         c.setDomain(serverDomain);
-        c.setSecure(true);
+        c.setSecure(false);
         c.setHttpOnly(true);
         response.addCookie(c);
         return new ResponseEntity<>(RequestContextHolder.currentRequestAttributes().getSessionId(),
