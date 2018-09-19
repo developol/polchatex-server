@@ -1,9 +1,11 @@
 package com.developol.polchatex.socket;
 
+import com.developol.polchatex.model.MessageDTO;
 import com.developol.polchatex.model.WebSocketPayload;
 import com.developol.polchatex.persistence.Chat;
 import com.developol.polchatex.persistence.Message;
 import com.developol.polchatex.services.PersistenceService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -18,12 +20,15 @@ import java.util.List;
 public class SimpleChatController {
     private SimpMessagingTemplate simpMessagingTemplate;
     private PersistenceService persistenceService;
+    private ModelMapper modelMapper;
 
     @Autowired
     public SimpleChatController(SimpMessagingTemplate simpMessagingTemplate,
-                                PersistenceService persistenceService) {
+                                PersistenceService persistenceService,
+                                ModelMapper modelMapper) {
         this.simpMessagingTemplate = simpMessagingTemplate;
         this.persistenceService = persistenceService;
+        this.modelMapper = modelMapper;
     }
 
     @MessageMapping("/send-message")
@@ -44,14 +49,17 @@ public class SimpleChatController {
             return;
         }
 
-        Message result = this.persistenceService.persistMessage(payload, user.getName(), chat);
+        Message queryResult = this.persistenceService.persistMessage(payload, user.getName(), chat);
 
-        if (result == null) {
+        if (queryResult == null) {
             //notify the sender, that something went wrong
             //not supported yet
             System.out.println("message NOT persisted");
             return;
         }
+
+        MessageDTO result = this.modelMapper.map(queryResult, MessageDTO.class);
+        result.setSender(queryResult.getSender().getUsername());
 
         List<String> receivers = this.persistenceService.getChatUsers(chat);
 
