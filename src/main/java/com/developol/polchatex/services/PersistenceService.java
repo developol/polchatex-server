@@ -41,7 +41,7 @@ public class PersistenceService {
 
     public Chat persistChat(String initiatorUsername, String[] usernames) {
         Chat chat = new Chat();
-        chat.setSize(usernames.length +1);
+        chat.setSize(usernames.length + 1);
         this.chatRepository.save(chat);
         // by default chatName is empty - the frontend uses usernames provided in ChatDTO to build it
         //TODO (optional): fit the requesting user in the loop
@@ -51,6 +51,7 @@ public class PersistenceService {
         chatUsers.setUser(this.getUser(initiatorUsername));
         this.chatUsersRepository.save(chatUsers);
         User user;
+
         for (String usrname : usernames) {
             chatUsers = new ChatUsers();
             user = this.getUser(usrname);
@@ -61,7 +62,7 @@ public class PersistenceService {
         return chat;
     }
 
-    private User getUser(String username) {
+    public User getUser(String username) {
         return this.userRepository.getByUsername(username);
     }
 

@@ -81,10 +81,14 @@ public class RestController {
     @PostMapping(path="/addchat")
     public ResponseEntity<ChatDTO> addChat(@RequestBody String[] usernames) {
         String currentUser = SecurityContextHolder.getContext().getAuthentication().getName();
+        for ( int i =0; i<usernames.length; i++) {
+            if (this.persistenceService.getUser(usernames[i]) == null) {
+                return new ResponseEntity<>(HttpStatus.CONFLICT);
+            }
+        }
         if (usernames.length == 1 && this.persistenceService.privateChatExists(currentUser, usernames[0])) {
            return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
-
         Chat chat = this.persistenceService.persistChat(currentUser, usernames);
         if ( chat == null) {
             return new ResponseEntity<>(HttpStatus.CONFLICT);

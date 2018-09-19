@@ -10,7 +10,7 @@ public interface MessageRepository extends CrudRepository<Message, Integer> {
     public List<Message> findAllByChat_Id(long id);
 
     @Query("SELECT m FROM Message m " +
-            "WHERE m.createDateTime = " +
-            "(SELECT MAX(x.createDateTime) FROM Message x WHERE x.chat = :chat)")
+            "WHERE m.id = " +
+            "(SELECT MAX(x.id) FROM Message x WHERE x.chat = :chat)")
     public Message getLastMessageByChat(@Param("chat")Chat chat);
 }
