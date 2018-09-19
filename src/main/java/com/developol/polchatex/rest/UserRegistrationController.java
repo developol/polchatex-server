@@ -1,9 +1,8 @@
 package com.developol.polchatex.rest;
-import com.developol.polchatex.persistence.User;
-import com.developol.polchatex.persistence.UserRepository;
+import com.developol.polchatex.services.PersistenceService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -14,41 +13,40 @@ import java.util.Map;
 @RequestMapping(path="/registration")
 public class UserRegistrationController {
 
-    private UserRepository userRepository;
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
-    private final InMemoryUserDetailsManager inMemoryUserDetailsManager;
 
-    public UserRegistrationController(UserRepository userRepository,
-                                      InMemoryUserDetailsManager inMemoryUserDetailsManager) {
-        this.bCryptPasswordEncoder = new BCryptPasswordEncoder();
-        this.userRepository = userRepository;
+    private final InMemoryUserDetailsManager inMemoryUserDetailsManager;
+    private PersistenceService persistenceService;
+
+    public UserRegistrationController(InMemoryUserDetailsManager inMemoryUserDetailsManager,
+                                      PersistenceService persistenceService) {
         this.inMemoryUserDetailsManager = inMemoryUserDetailsManager;
+        this.persistenceService = persistenceService;
     }
 
     @CrossOrigin
     @PostMapping(path="/add")
     public ResponseEntity addUser(@RequestBody Map<String, Object> body) {
-        User user = new User();
+        String username = (String)body.get("username");
+        String password = (String)body.get("password");
 
-        user.setUsername((String)body.get("username"));
-        user.setPassword((String)body.get("password"));
-        if (user.getPassword() != null && !user.getPassword().trim().equals("")
-                && user.getUsername() !=null && !user.getUsername().trim().equals("") ) {
+        if (password == null || username == null
+                || password.trim().equals("")
+                || username.trim().equals("") ) {
+            return new ResponseEntity(HttpStatus.NOT_ACCEPTABLE);
+        }
 
-            user.setPassword("{bcrypt}" + bCryptPasswordEncoder.encode(user.getPassword()));
-            user.setEmail("dupa");
+        if (this.persistenceService.getUser(username) != null) {
+            return new ResponseEntity(HttpStatus.CONFLICT);
+        }
 
-            userRepository.save(user);
-            inMemoryUserDetailsManager.createUser( org.springframework.security.core.userdetails.User.builder()
-                    .username(user.getUsername())
-                    .password(user.getPassword())
-                    .roles("USER")
-                    .build());
+        this.persistenceService.persistUser(username, password);
+
+        inMemoryUserDetailsManager.createUser(User.builder()
+                .username(username)
+                .password(password)
+                .roles("USER")
+                .build());
             return new ResponseEntity(HttpStatus.OK);
         }
-        return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
-
-
-}

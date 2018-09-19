@@ -3,6 +3,7 @@ package com.developol.polchatex.services;
 
 import com.developol.polchatex.model.WebSocketPayload;
 import com.developol.polchatex.persistence.*;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,6 +14,9 @@ public class PersistenceService {
     private ChatRepository chatRepository;
     private UserRepository userRepository;
     private ChatUsersRepository chatUsersRepository;
+
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
+
     public PersistenceService(MessageRepository messageRepository,
                               ChatRepository chatRepository,
                               UserRepository userRepository,
@@ -21,6 +25,8 @@ public class PersistenceService {
         this.chatRepository = chatRepository;
         this.userRepository = userRepository;
         this.chatUsersRepository = chatUsersRepository;
+
+        this.bCryptPasswordEncoder = new BCryptPasswordEncoder();
     }
 
     public Message persistMessage(WebSocketPayload payload, String senderUsername, Chat chat) {
@@ -62,6 +68,20 @@ public class PersistenceService {
         return chat;
     }
 
+    public void persistUser(String username, String password) {
+        User user = new User();
+
+        //password encryption is done with bcrypt
+        //this information is stored in the database using the { } notation
+        //according to spring security's specification
+        user.setPassword("{bcrypt}" + bCryptPasswordEncoder.encode(user.getPassword()));
+
+        user.setEmail("place@holder.com"); // email functionalities not yet supported
+
+        user.setUsername(username);
+        this.userRepository.save(user);
+    }
+
     public User getUser(String username) {
         return this.userRepository.getByUsername(username);
     }
@@ -92,4 +112,7 @@ public class PersistenceService {
         return this.chatUsersRepository.isUserInChat(chatID, username) !=0;
     }
 
+    public String getUsername(long id) {
+        return this.userRepository.getById(id).getUsername();
+    }
 }

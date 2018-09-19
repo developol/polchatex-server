@@ -15,7 +15,7 @@ import java.security.Principal;
 import java.util.List;
 
 @Controller
-public class        SimpleChatController {
+public class SimpleChatController {
     private SimpMessagingTemplate simpMessagingTemplate;
     private PersistenceService persistenceService;
 

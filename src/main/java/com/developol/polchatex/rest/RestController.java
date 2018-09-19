@@ -69,6 +69,7 @@ public class RestController {
             Message message = this.persistenceService.getLastMessage(chat);
             if (message != null) {
                 chatDTO.setLastMessage(this.modelMapper.map(message, MessageDTO.class));
+                chatDTO.getLastMessage().setSender(message.getSender().getUsername());
             }
             String[] usernames = this.persistenceService.getChatUsers(chat).toArray(new String[0]);
             chatDTO.setUsernames(usernames);

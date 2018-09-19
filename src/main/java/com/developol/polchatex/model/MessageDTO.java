@@ -5,7 +5,7 @@ package com.developol.polchatex.model;
 public class MessageDTO {
     private long id;
     private long ChatID;
-    private long senderID;
+    private String sender;
     private String content;
     private String createDateTime;
     private boolean isRead;
@@ -26,13 +26,7 @@ public class MessageDTO {
         ChatID = chatID;
     }
 
-    public long getSenderID() {
-        return senderID;
-    }
 
-    public void setSenderID(long senderID) {
-        this.senderID = senderID;
-    }
 
     public String getContent() {
         return content;
@@ -57,5 +51,13 @@ public class MessageDTO {
 
     public void setCreateDateTime(String createDateTime) {
         this.createDateTime = createDateTime;
+    }
+
+    public String getSender() {
+        return sender;
+    }
+
+    public void setSender(String sender) {
+        this.sender = sender;
     }
 }
