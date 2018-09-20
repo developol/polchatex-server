@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
+
 @Controller
 @RequestMapping(path="/registration")
 public class UserRegistrationController {
@@ -22,16 +23,21 @@ public class UserRegistrationController {
         this.inMemoryUserDetailsManager = inMemoryUserDetailsManager;
         this.persistenceService = persistenceService;
     }
+    @CrossOrigin
+    @GetMapping(path="/test")
+    public ResponseEntity test() {
+        return new ResponseEntity(HttpStatus.OK);
+    }
 
     @CrossOrigin
-    @PostMapping(path="/add")
+    @RequestMapping(path = "/add", method = RequestMethod.POST)
     public ResponseEntity addUser(@RequestBody Map<String, Object> body) {
-        String username = (String)body.get("username");
-        String password = (String)body.get("password");
+        String username = (String) body.get("username");
+        String password = (String) body.get("password");
 
         if (password == null || username == null
                 || password.trim().equals("")
-                || username.trim().equals("") ) {
+                || username.trim().equals("")) {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
 
@@ -46,7 +52,13 @@ public class UserRegistrationController {
                 .password(password)
                 .roles("USER")
                 .build());
-            return new ResponseEntity(HttpStatus.OK);
-        }
+        return new ResponseEntity(HttpStatus.OK);
     }
+
+    @CrossOrigin
+    @RequestMapping(path = "/add", method = RequestMethod.OPTIONS)
+    public ResponseEntity handle() {
+        return new ResponseEntity(HttpStatus.OK);
+    }
+}
 

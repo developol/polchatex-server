@@ -74,7 +74,7 @@ public class PersistenceService {
         //password encryption is done with bcrypt
         //this information is stored in the database using the { } notation
         //according to spring security's specification
-        user.setPassword("{bcrypt}" + bCryptPasswordEncoder.encode(user.getPassword()));
+        user.setPassword("{bcrypt}" + bCryptPasswordEncoder.encode(password));
 
         user.setEmail("place@holder.com"); // email functionalities not yet supported
 

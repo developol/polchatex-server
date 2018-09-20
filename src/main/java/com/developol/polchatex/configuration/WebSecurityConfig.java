@@ -41,7 +41,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 httpBasic().and()
                 .authorizeRequests()
                 .antMatchers("/login").permitAll()
-                .antMatchers("/registration/**").permitAll()
+                .antMatchers(HttpMethod.OPTIONS,"/registration/**").permitAll()
+                .antMatchers(HttpMethod.POST,"/registration/**").permitAll()
                 .antMatchers("/security/tknauth").hasRole("USER")
                 .antMatchers(HttpMethod.OPTIONS, "/rest/**").permitAll()
                 .antMatchers(HttpMethod.GET, "/rest/**").hasRole("USER")
@@ -60,8 +61,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(Arrays.asList(clientUrl));
-        configuration.setAllowedMethods(Arrays.asList("GET","POST"));
-        configuration.setAllowedHeaders(Arrays.asList("authorization"));
+        configuration.setAllowedMethods(Arrays.asList("GET","POST","OPTIONS"));
+        configuration.setAllowedHeaders(Arrays.asList("*"));
         configuration.setAllowCredentials(true);
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
