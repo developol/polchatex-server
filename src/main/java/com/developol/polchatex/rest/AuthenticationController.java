@@ -31,7 +31,7 @@ public class AuthenticationController {
         Cookie cookie = new Cookie("JSESSIONID", RequestContextHolder.currentRequestAttributes().getSessionId());
         cookie.setPath("/");
         cookie.setHttpOnly(true);
-        cookie.setMaxAge(0);
+        cookie.setSecure(true);
         response.addCookie(cookie);
         return new ResponseEntity<>(RequestContextHolder.currentRequestAttributes().getSessionId(),
                 HttpStatus.OK);
