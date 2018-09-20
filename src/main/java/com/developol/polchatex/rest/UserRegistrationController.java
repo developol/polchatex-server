@@ -3,6 +3,7 @@ import com.developol.polchatex.services.PersistenceService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.User;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -17,11 +18,13 @@ public class UserRegistrationController {
 
     private final InMemoryUserDetailsManager inMemoryUserDetailsManager;
     private PersistenceService persistenceService;
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     public UserRegistrationController(InMemoryUserDetailsManager inMemoryUserDetailsManager,
                                       PersistenceService persistenceService) {
         this.inMemoryUserDetailsManager = inMemoryUserDetailsManager;
         this.persistenceService = persistenceService;
+        this.bCryptPasswordEncoder = new BCryptPasswordEncoder();
     }
     @CrossOrigin
     @GetMapping(path="/test")
@@ -49,7 +52,7 @@ public class UserRegistrationController {
 
         inMemoryUserDetailsManager.createUser(User.builder()
                 .username(username)
-                .password(password)
+                .password("{bcrypt}" +this.bCryptPasswordEncoder.encode(password))
                 .roles("USER")
                 .build());
         return new ResponseEntity(HttpStatus.OK);
