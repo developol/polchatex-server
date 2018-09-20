@@ -26,11 +26,6 @@ public class UserRegistrationController {
         this.persistenceService = persistenceService;
         this.bCryptPasswordEncoder = new BCryptPasswordEncoder();
     }
-    @CrossOrigin
-    @GetMapping(path="/test")
-    public ResponseEntity test() {
-        return new ResponseEntity(HttpStatus.OK);
-    }
 
     @CrossOrigin
     @RequestMapping(path = "/add", method = RequestMethod.POST)

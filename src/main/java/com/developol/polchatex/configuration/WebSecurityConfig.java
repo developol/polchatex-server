@@ -56,9 +56,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .disable()
                 .cors()
                 .and()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
-                .and()
-                .logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).deleteCookies("JSESSIONID").invalidateHttpSession(true).clearAuthentication(true);
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED);
     }
     @Bean
     CorsConfigurationSource corsConfigurationSource() {

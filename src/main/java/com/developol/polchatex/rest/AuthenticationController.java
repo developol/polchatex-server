@@ -24,13 +24,19 @@ public class AuthenticationController {
 
     //@CrossOrigin(value={"https://polchatex-front.herokuapp.com", "https://polchatex-front2.herokuapp.com",
      //       "http://localhost:4200"})
+    @CrossOrigin
     @GetMapping(path="/tknauth")
     public @ResponseBody
     ResponseEntity<String> greeting(HttpServletResponse response) {
+        Cookie cookie = new Cookie("JSESSIONID", RequestContextHolder.currentRequestAttributes().getSessionId());
+        cookie.setPath("/");
+        cookie.setHttpOnly(true);
+        cookie.setMaxAge(0);
+        response.addCookie(cookie);
         return new ResponseEntity<>(RequestContextHolder.currentRequestAttributes().getSessionId(),
                 HttpStatus.OK);
     }
-
+    @CrossOrigin
     @GetMapping(path="/logout")
     public ResponseEntity<HttpStatus> logout(HttpServletResponse response, HttpServletRequest request) {
         Cookie cookie = new Cookie("JSESSIONID", null);
