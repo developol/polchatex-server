@@ -4,11 +4,13 @@ import com.developol.polchatex.properties.Properties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.RequestContextHolder;
 
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @Controller
@@ -25,12 +27,19 @@ public class AuthenticationController {
     @GetMapping(path="/tknauth")
     public @ResponseBody
     ResponseEntity<String> greeting(HttpServletResponse response) {
-        Cookie c = new Cookie("JSESSIONID", RequestContextHolder.currentRequestAttributes().getSessionId());
-        c.setDomain(serverDomain);
-        c.setSecure(false);
-        c.setHttpOnly(true);
-        response.addCookie(c);
         return new ResponseEntity<>(RequestContextHolder.currentRequestAttributes().getSessionId(),
                 HttpStatus.OK);
     }
+
+    @GetMapping(path="/logout")
+    public ResponseEntity<HttpStatus> logout(HttpServletResponse response, HttpServletRequest request) {
+        Cookie cookie = new Cookie("JSESSIONID", null);
+        cookie.setPath("/");
+        cookie.setHttpOnly(true);
+        cookie.setMaxAge(0);
+        response.addCookie(cookie);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+
 }

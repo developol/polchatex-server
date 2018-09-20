@@ -14,6 +14,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -40,7 +41,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.
                 httpBasic().and()
                 .authorizeRequests()
-                .antMatchers("/login").permitAll()
+                .antMatchers("/logout").permitAll()
                 .antMatchers(HttpMethod.OPTIONS,"/registration/**").permitAll()
                 .antMatchers(HttpMethod.POST,"/registration/**").permitAll()
                 .antMatchers("/security/tknauth").hasRole("USER")
@@ -55,7 +56,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .disable()
                 .cors()
                 .and()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED);
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
+                .and()
+                .logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).deleteCookies("JSESSIONID").invalidateHttpSession(true).clearAuthentication(true);
     }
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
